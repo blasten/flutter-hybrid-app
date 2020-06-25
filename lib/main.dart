@@ -130,7 +130,7 @@ class AdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(itemBuilder: _itemBuilder, cacheExtent: 1000),
+      body: ListView.builder(itemBuilder: _itemBuilder),
     );
   }
 
