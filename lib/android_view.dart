@@ -124,8 +124,6 @@ class _AndroidViewController extends PlatformViewController {
       'viewType': _viewType,
       'hybrid': true,
       'direction': _getAndroidDirection(_layoutDirection),
-      'width': 0.0,
-      'height': 0.0,
     };
     if (_creationParams != null) {
       final ByteData paramsByteData =
