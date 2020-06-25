@@ -141,7 +141,7 @@ class AdPage extends StatelessWidget {
         height: 300,
         color: Colors.orange,
         child: Stack(
-          children: const <Widget> [
+          children: const <Widget>[
             const AndroidPlatformView(
               viewType: 'plugins.flutter.io/webview',
             ),
@@ -154,7 +154,6 @@ class AdPage extends StatelessWidget {
   }
 }
 
-
 class RotationContainer extends StatefulWidget {
   const RotationContainer({Key key}) : super(key: key);
 
@@ -163,7 +162,7 @@ class RotationContainer extends StatefulWidget {
 }
 
 class _RotationContainerState extends State<RotationContainer>
-  with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   AnimationController _rotationController;
 
   @override
@@ -176,6 +175,7 @@ class _RotationContainerState extends State<RotationContainer>
     );
     _rotationController.repeat();
   }
+
   @override
   Widget build(BuildContext context) {
     return RotationTransition(
@@ -188,4 +188,3 @@ class _RotationContainerState extends State<RotationContainer>
     );
   }
 }
-

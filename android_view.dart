@@ -15,8 +15,8 @@ class AndroidPlatformView extends StatelessWidget {
   const AndroidPlatformView({
     Key key,
     @required this.viewType,
-  }) : assert(viewType != null),
-       super(key: key);
+  })  : assert(viewType != null),
+        super(key: key);
 
   /// The unique identifier for the view type to be embedded by this widget.
   ///
@@ -28,7 +28,8 @@ class AndroidPlatformView extends StatelessWidget {
     return PlatformViewLink(
       viewType: viewType,
       onCreatePlatformView: _onCreateAndroidView,
-      surfaceFactory: (BuildContext context, PlatformViewController controller) {
+      surfaceFactory:
+          (BuildContext context, PlatformViewController controller) {
         return PlatformViewSurface(
           controller: controller,
           gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
@@ -38,9 +39,13 @@ class AndroidPlatformView extends StatelessWidget {
     );
   }
 
-  PlatformViewController _onCreateAndroidView(PlatformViewCreationParams params) {
-    final _AndroidViewController controller = _AndroidViewController(params.id, viewType);
-    controller._initialize().then((_) { params.onPlatformViewCreated(params.id); });
+  PlatformViewController _onCreateAndroidView(
+      PlatformViewCreationParams params) {
+    final _AndroidViewController controller =
+        _AndroidViewController(params.id, viewType);
+    controller._initialize().then((_) {
+      params.onPlatformViewCreated(params.id);
+    });
     return controller;
   }
 }
