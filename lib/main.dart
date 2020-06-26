@@ -141,11 +141,14 @@ class AdPage extends StatelessWidget {
         height: 300,
         color: Colors.orange,
         child: Stack(
-          children: const <Widget>[
+          children: <Widget>[
             const AndroidPlatformView(
               viewType: 'plugins.flutter.io/webview',
             ),
-            // RotationContainer(),
+            Transform.translate(
+              offset: const Offset(50.0, 280.0),
+              child: const RotationContainer(),
+            )
           ],
         ),
       );

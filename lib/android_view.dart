@@ -122,8 +122,8 @@ class _AndroidViewController extends PlatformViewController {
     final Map<String, dynamic> args = <String, dynamic>{
       'id': viewId,
       'viewType': _viewType,
-      'hybrid': true,
       'direction': _getAndroidDirection(_layoutDirection),
+      'hybrid': true,
     };
     if (_creationParams != null) {
       final ByteData paramsByteData =
@@ -149,8 +149,12 @@ class _AndroidViewController extends PlatformViewController {
 
   @override
   void dispose() {
+    final Map<String, dynamic> args = <String, dynamic>{
+      'id': viewId,
+      'hybrid': true,
+    };
     // TODO: dispose should be async.
-    SystemChannels.platform_views.invokeMethod<void>('dispose', viewId);
+    SystemChannels.platform_views.invokeMethod<void>('dispose', args);
   }
 
   /// Android's [View.LAYOUT_DIRECTION_LTR](https://developer.android.com/reference/android/view/View.html#LAYOUT_DIRECTION_LTR) value.
