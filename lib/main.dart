@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter/src/webview_method_channel.dart';
+
 import 'dart:ui';
 import 'dart:typed_data';
 
@@ -126,6 +131,33 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class NativeWebView extends StatelessWidget {
+  const NativeWebView({Key key}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    final CreationParams creationParams = CreationParams(
+      initialUrl: 'https://flutter.dev',
+      webSettings: WebSettings(
+        javascriptMode: JavascriptMode.unrestricted,
+        hasNavigationDelegate: false,
+        debuggingEnabled: false,
+        gestureNavigationEnabled: false,
+        userAgent: WebSetting<String>.of(null),
+      ),
+      javascriptChannelNames: Set<String>(),
+      autoMediaPlaybackPolicy:
+          AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
+    );
+
+    return AndroidPlatformView(
+      viewType: 'plugins.flutter.io/webview',
+      creationParams:
+          MethodChannelWebViewPlatform.creationParamsToMap(creationParams),
+      creationParamsCodec: const StandardMessageCodec(),
+    );
+  }
+}
+
 class AdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -142,13 +174,11 @@ class AdPage extends StatelessWidget {
         color: Colors.orange,
         child: Stack(
           children: <Widget>[
-            const AndroidPlatformView(
-              viewType: 'plugins.flutter.io/webview',
-            ),
-            Transform.translate(
-              offset: const Offset(50.0, 280.0),
-              child: const RotationContainer(),
-            )
+            const NativeWebView(),
+            // Transform.translate(
+            //   offset: const Offset(50.0, 280.0),
+            //   child: const RotationContainer(),
+            // )
           ],
         ),
       );
