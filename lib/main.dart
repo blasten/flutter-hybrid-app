@@ -145,14 +145,12 @@ class NativeWebView extends StatelessWidget {
         userAgent: WebSetting<String>.of(null),
       ),
       javascriptChannelNames: Set<String>(),
-      autoMediaPlaybackPolicy:
-          AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
+      autoMediaPlaybackPolicy: AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
     );
 
     return AndroidPlatformView(
       viewType: 'plugins.flutter.io/webview',
-      creationParams:
-          MethodChannelWebViewPlatform.creationParamsToMap(creationParams),
+      creationParams: MethodChannelWebViewPlatform.creationParamsToMap(creationParams),
       creationParamsCodec: const StandardMessageCodec(),
     );
   }
@@ -194,8 +192,7 @@ class RotationContainer extends StatefulWidget {
   _RotationContainerState createState() => _RotationContainerState();
 }
 
-class _RotationContainerState extends State<RotationContainer>
-    with SingleTickerProviderStateMixin {
+class _RotationContainerState extends State<RotationContainer> with SingleTickerProviderStateMixin {
   AnimationController _rotationController;
 
   @override

@@ -51,126 +51,22 @@ class AndroidPlatformView extends StatelessWidget {
   Widget build(BuildContext context) {
     return PlatformViewLink(
       viewType: viewType,
-      onCreatePlatformView: (PlatformViewCreationParams params) {
-        return controllerFactory(params, context);
-      },
-      surfaceFactory:
-          (BuildContext context, PlatformViewController controller) {
-        return PlatformViewSurface(
+      surfaceFactory: (BuildContext context, PlatformViewController controller) {
+        return AndroidViewSurface(
           controller: controller,
           gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
           hitTestBehavior: PlatformViewHitTestBehavior.opaque,
         );
       },
+      onCreatePlatformView: (PlatformViewCreationParams params) {
+        return PlatformViewsService.initSurfaceAndroidView(
+          id: params.id,
+          viewType: viewType,
+          layoutDirection: TextDirection.ltr,
+          creationParams: creationParams,
+          creationParamsCodec: StandardMessageCodec(),
+        )..addOnPlatformViewCreatedListener(params.onPlatformViewCreated);
+      },
     );
-  }
-
-  PlatformViewController controllerFactory(
-      PlatformViewCreationParams params, BuildContext context) {
-    final _AndroidViewController controller = _AndroidViewController(
-      params.id,
-      viewType,
-      creationParams,
-      creationParamsCodec,
-      _findLayoutDirection(context),
-    );
-    controller._initialize().then((_) {
-      params.onPlatformViewCreated(params.id);
-    });
-    return controller;
-  }
-
-  TextDirection _findLayoutDirection(BuildContext context) {
-    assert(layoutDirection != null || debugCheckHasDirectionality(context));
-    return layoutDirection ?? Directionality.of(context);
-  }
-}
-
-// TODO(egarciad): The Android view controller should be defined in the framework.
-// https://github.com/flutter/flutter/issues/55904
-class _AndroidViewController extends PlatformViewController {
-  _AndroidViewController(
-    this.viewId,
-    String viewType,
-    dynamic creationParams,
-    MessageCodec<dynamic> creationParamsCodec,
-    TextDirection layoutDirection,
-  )   : assert(viewId != null),
-        assert(viewType != null),
-        _viewType = viewType,
-        _creationParams = creationParams,
-        _creationParamsCodec = creationParamsCodec,
-        _layoutDirection = layoutDirection;
-
-  /// The unique identifier of the Android view controlled by this controller.
-  @override
-  final int viewId;
-
-  /// The unique identifier for the Android view type to be embedded by this widget.
-  ///
-  /// A PlatformViewFactory for this type must have been registered.
-  final String _viewType;
-
-  /// The creation params can be used to pass values to the native factory.
-  final dynamic _creationParams;
-
-  final MessageCodec<dynamic> _creationParamsCodec;
-
-  final TextDirection _layoutDirection;
-
-  Future<void> _initialize() async {
-    final Map<String, dynamic> args = <String, dynamic>{
-      'id': viewId,
-      'viewType': _viewType,
-      'direction': _getAndroidDirection(_layoutDirection),
-      'hybrid': true,
-    };
-    if (_creationParams != null) {
-      final ByteData paramsByteData =
-          _creationParamsCodec.encodeMessage(_creationParams);
-      args['params'] = Uint8List.view(
-        paramsByteData.buffer,
-        0,
-        paramsByteData.lengthInBytes,
-      );
-    }
-    await SystemChannels.platform_views.invokeMethod('create', args);
-  }
-
-  @override
-  void clearFocus() {
-    // TODO: Implement clear focus.
-  }
-
-  @override
-  void dispatchPointerEvent(PointerEvent event) {
-    // TODO: Implement dispatchPointerEvent
-  }
-
-  @override
-  void dispose() {
-    final Map<String, dynamic> args = <String, dynamic>{
-      'id': viewId,
-      'hybrid': true,
-    };
-    // TODO: dispose should be async.
-    SystemChannels.platform_views.invokeMethod<void>('dispose', args);
-  }
-
-  /// Android's [View.LAYOUT_DIRECTION_LTR](https://developer.android.com/reference/android/view/View.html#LAYOUT_DIRECTION_LTR) value.
-  static const int kAndroidLayoutDirectionLtr = 0;
-
-  /// Android's [View.LAYOUT_DIRECTION_RTL](https://developer.android.com/reference/android/view/View.html#LAYOUT_DIRECTION_RTL) value.
-  static const int kAndroidLayoutDirectionRtl = 1;
-
-  static int _getAndroidDirection(TextDirection direction) {
-    assert(direction != null);
-    switch (direction) {
-      case TextDirection.ltr:
-        return kAndroidLayoutDirectionLtr;
-      case TextDirection.rtl:
-        return kAndroidLayoutDirectionRtl;
-    }
-    return null;
   }
 }
