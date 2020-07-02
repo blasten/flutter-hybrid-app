@@ -1,12 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:webview_flutter/platform_interface.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter/src/webview_method_channel.dart';
 
-import 'dart:ui';
-import 'dart:typed_data';
+// ignore: implementation_imports
+import 'package:webview_flutter/src/webview_method_channel.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'android_view.dart';
 
@@ -57,18 +57,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  void _incrementCounter() {}
 
   @override
   Widget build(BuildContext context) {
@@ -145,12 +134,14 @@ class NativeWebView extends StatelessWidget {
         userAgent: WebSetting<String>.of(null),
       ),
       javascriptChannelNames: Set<String>(),
-      autoMediaPlaybackPolicy: AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
+      autoMediaPlaybackPolicy:
+          AutoMediaPlaybackPolicy.require_user_action_for_all_media_types,
     );
 
     return AndroidPlatformView(
       viewType: 'plugins.flutter.io/webview',
-      creationParams: MethodChannelWebViewPlatform.creationParamsToMap(creationParams),
+      creationParams:
+          MethodChannelWebViewPlatform.creationParamsToMap(creationParams),
       creationParamsCodec: const StandardMessageCodec(),
     );
   }
@@ -192,7 +183,8 @@ class RotationContainer extends StatefulWidget {
   _RotationContainerState createState() => _RotationContainerState();
 }
 
-class _RotationContainerState extends State<RotationContainer> with SingleTickerProviderStateMixin {
+class _RotationContainerState extends State<RotationContainer>
+    with SingleTickerProviderStateMixin {
   AnimationController _rotationController;
 
   @override

@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
-import 'dart:typed_data';
-
 class AndroidPlatformView extends StatelessWidget {
   /// Creates a platform view for Android, which is rendered as a
   /// native view.
@@ -51,10 +49,15 @@ class AndroidPlatformView extends StatelessWidget {
   Widget build(BuildContext context) {
     return PlatformViewLink(
       viewType: viewType,
-      surfaceFactory: (BuildContext context, PlatformViewController controller) {
+      surfaceFactory:
+          (BuildContext context, PlatformViewController controller) {
         return AndroidViewSurface(
           controller: controller,
-          gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
+          gestureRecognizers: [
+            new Factory<OneSequenceGestureRecognizer>(
+              () => new EagerGestureRecognizer(),
+            ),
+          ].toSet(),
           hitTestBehavior: PlatformViewHitTestBehavior.opaque,
         );
       },
