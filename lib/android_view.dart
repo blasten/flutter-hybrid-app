@@ -138,17 +138,17 @@ class _AndroidViewController extends PlatformViewController {
   }
 
   @override
-  void clearFocus() {
+  Future<void> clearFocus() {
     // TODO: Implement clear focus.
   }
 
   @override
-  void dispatchPointerEvent(PointerEvent event) {
+  Future<void> dispatchPointerEvent(PointerEvent event) {
     // TODO: Implement dispatchPointerEvent
   }
 
   @override
-  void dispose() {
+  Future<void> dispose() {
     final Map<String, dynamic> args = <String, dynamic>{
       'id': viewId,
       'hybrid': true,
